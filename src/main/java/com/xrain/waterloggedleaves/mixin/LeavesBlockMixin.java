@@ -1,6 +1,7 @@
 package com.xrain.waterloggedleaves.mixin;
 
 import com.xrain.waterloggedleaves.api.LeafWaterHandler;
+import com.xrain.waterloggedleaves.WaterloggedLeavesMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
@@ -19,6 +20,7 @@ import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -34,12 +36,15 @@ public abstract class LeavesBlockMixin extends Block implements Waterloggable {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init(Settings settings, CallbackInfo ci) {
         this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false));
+        // 在这里添加调试输出，监控树叶方块的默认状态
+        WaterloggedLeavesMod.debug("初始化树叶方块默认状态: " + this.getDefaultState());
     }
     
     // 将WATERLOGGED属性添加到方块状态
     @Inject(method = "appendProperties", at = @At("RETURN"))
     private void appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
         builder.add(WATERLOGGED);
+        WaterloggedLeavesMod.debug("向树叶方块添加WATERLOGGED属性: " + WATERLOGGED);
     }
     
     // 实现Waterloggable接口，返回水的流体状态

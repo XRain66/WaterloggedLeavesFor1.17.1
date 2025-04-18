@@ -7,8 +7,7 @@
   "mixins": [
     "LeavesBlockMixin",
     "LeavesBlockParticleMixin",
-    "IdMapperMixin",
-    "BlockMixin"
+    "IdMapperMixin"
   ],
   "client": [],
   "injectors": {
