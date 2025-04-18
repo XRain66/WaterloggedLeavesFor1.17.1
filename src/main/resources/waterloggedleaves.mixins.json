@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.xrain.waterloggedleaves.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "waterloggedleaves.refmap.json",
+  "mixins": [
+    "LeavesBlockMixin",
+    "LeavesBlockParticleMixin",
+    "IdMapperMixin",
+    "BlockMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+} 
