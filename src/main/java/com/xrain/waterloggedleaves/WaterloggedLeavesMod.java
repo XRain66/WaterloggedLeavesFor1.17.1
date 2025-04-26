@@ -10,18 +10,12 @@ import org.slf4j.LoggerFactory;
 public class WaterloggedLeavesMod implements DedicatedServerModInitializer {
     public static final String MOD_ID = "waterloggedleaves";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    
-    public static final boolean DEBUG_MODE = false;
 
     private LeafParticleManager particleManager;
 
     @Override
     public void onInitializeServer() {
         LOGGER.info("Waterlogged Leaves Mod 初始化中...");
-        
-        if (DEBUG_MODE) {
-            LOGGER.info("调试模式已启用，将输出更多日志信息");
-        }
         
         // 初始化粒子管理器，负责显示含水树叶的水滴粒子效果
         particleManager = new LeafParticleManager();
@@ -32,12 +26,5 @@ public class WaterloggedLeavesMod implements DedicatedServerModInitializer {
         });
         
         LOGGER.info("Waterlogged Leaves Mod 已成功初始化");
-    }
-    
-    //debug
-    public static void debug(String message) {
-        if (DEBUG_MODE) {
-            LOGGER.info("[DEBUG] " + message);
-        }
     }
 } 

@@ -2,8 +2,6 @@ package com.xrain.waterloggedleaves.api;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,30 +32,5 @@ public class LeafWaterHandler {
             }
         }
         return WATERLOGGED_STATES.getOrDefault(pos, false);
-    }
-    
-    // 获取方块对应的流体状态
-    public static FluidState getFluidState(BlockState state, BlockPos pos) {
-        if (isWaterlogged(pos, null)) {
-            return Fluids.WATER.getStill(false);
-        }
-        return Fluids.EMPTY.getDefaultState();
-    }
-    
-    // 处理树叶方块在水中放置的逻辑
-    public static void onLeavesPlacedInWater(BlockPos pos, World world) {
-        setWaterlogged(pos, true);
-        world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-    }
-    
-    // 处理树叶方块被移除时的逻辑
-    public static void onLeavesRemoved(BlockPos pos, World world) {
-        WATERLOGGED_STATES.remove(pos);
-        BlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof LeavesBlock && 
-            state.contains(Properties.WATERLOGGED) && 
-            state.get(Properties.WATERLOGGED)) {
-            world.setBlockState(pos, Fluids.WATER.getDefaultState().getBlockState());
-        }
     }
 }

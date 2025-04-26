@@ -1,6 +1,5 @@
 package com.xrain.waterloggedleaves.mixin;
 
-import com.xrain.waterloggedleaves.WaterloggedLeavesMod;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.state.property.Properties;
@@ -23,8 +22,6 @@ public class IdMapperMixin<T> {
             if (state.getBlock() instanceof LeavesBlock && 
                 state.contains(Properties.WATERLOGGED) && 
                 state.get(Properties.WATERLOGGED)) {
-                
-                WaterloggedLeavesMod.debug("拦截含水树叶方块状态添加: " + state);
                 ci.cancel();
             }
         }
@@ -45,7 +42,6 @@ public class IdMapperMixin<T> {
                 Integer id = self.getRawId(dryState);
                 
                 if (id != null) {
-                    WaterloggedLeavesMod.debug("重定向含水树叶方块状态ID查询: " + state + " -> " + id);
                     cir.setReturnValue(id);
                 }
             }

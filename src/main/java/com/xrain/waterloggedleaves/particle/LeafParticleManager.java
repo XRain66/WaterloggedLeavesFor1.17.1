@@ -1,6 +1,5 @@
 package com.xrain.waterloggedleaves.particle;
 
-import com.xrain.waterloggedleaves.WaterloggedLeavesMod;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +22,13 @@ public class LeafParticleManager {
     private static final int PARTICLE_INTERVAL = 1;
     private final Map<UUID, Set<BlockPos>> playerLeafBlocks = new HashMap<>();
     private int tickCounter = 0;
+    
+    // 辅助方法：检查方块是否为含水树叶
+    private boolean isWaterloggedLeaf(BlockState state) {
+        return state.getBlock() instanceof LeavesBlock && 
+               state.contains(Properties.WATERLOGGED) && 
+               state.get(Properties.WATERLOGGED);
+    }
     
     // 每个tick执行一次，负责更新和生成含水树叶的水滴粒子
     public void tick(MinecraftServer server) {
@@ -56,10 +62,7 @@ public class LeafParticleManager {
                 iterator.remove();
                 continue;
             }
-            BlockState state = world.getBlockState(pos);
-            if (!(state.getBlock() instanceof LeavesBlock) || 
-                !state.contains(Properties.WATERLOGGED) || 
-                !state.get(Properties.WATERLOGGED)) {
+            if (!isWaterloggedLeaf(world.getBlockState(pos))) {
                 iterator.remove();
             }
         }
@@ -76,20 +79,13 @@ public class LeafParticleManager {
                     for (int y = -2; y <= 2 && count < MAX_BLOCKS_PER_PLAYER; y++) {
                         BlockPos pos = centerPos.add(x, y, z);
                         if (leafBlocks.contains(pos)) continue;
-                        BlockState state = world.getBlockState(pos);
-                        if (state.getBlock() instanceof LeavesBlock && 
-                            state.contains(Properties.WATERLOGGED) && 
-                            state.get(Properties.WATERLOGGED)) {
+                        if (isWaterloggedLeaf(world.getBlockState(pos))) {
                             leafBlocks.add(pos);
                             count++;
                         }
                     }
                 }
             }
-        }
-        if (count > 0) {
-            WaterloggedLeavesMod.debug("为玩家 " + player.getName().getString() + 
-                " 找到 " + count + " 个新的含水树叶方块");
         }
     }
 
